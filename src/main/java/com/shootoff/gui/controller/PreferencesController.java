@@ -83,15 +83,15 @@ CameraRenamedListener {
 	@FXML private CheckBox greenLaserSoundCheckBox;
 	@FXML private TextField greenLaserSoundTextField;
 	@FXML private Button greenLaserSoundButton;
-	@FXML private CheckBox virtualMagazineCheckBox;
-	@FXML private Slider virtualMagazineSlider;
-	@FXML private Label virtualMagazineLabel;
-	@FXML private CheckBox malfunctionsCheckBox;
-	@FXML private Slider malfunctionsSlider;
-	@FXML private Label malfunctionsLabel;
-	@FXML private ChoiceBox<String> calibratedOptionsChoiceBox;
-	@FXML private CheckBox showArenaShotMarkersCheckBox;
-	@FXML private CheckBox autoAdjustExposureCheckBox;
+	//@FXML private CheckBox virtualMagazineCheckBox;
+	//@FXML private Slider virtualMagazineSlider;
+	//@FXML private Label virtualMagazineLabel;
+	//@FXML private CheckBox malfunctionsCheckBox;
+	//@FXML private Slider malfunctionsSlider;
+	//@FXML private Label malfunctionsLabel;
+	//@FXML private ChoiceBox<String> calibratedOptionsChoiceBox;
+	//@FXML private CheckBox showArenaShotMarkersCheckBox;
+	//@FXML private CheckBox autoAdjustExposureCheckBox;
 
 	private Stage parent;
 	private Configuration config;
@@ -115,9 +115,12 @@ CameraRenamedListener {
 		this.cameraConfigListener = cameraConfigListener;
 
 		ignoreLaserColorChoiceBox.setItems(FXCollections.observableArrayList("None", "red", "green"));
-		calibratedOptionsChoiceBox.setItems(FXCollections.observableArrayList(CalibrationOption.EVERYWHERE.toString(), 
-				CalibrationOption.ONLY_IN_BOUNDS.toString(), CalibrationOption.CROP.toString()));
-
+		/*
+		 * calibratedOptionsChoiceBox.setItems(FXCollections.observableArrayList(
+		 * CalibrationOption.EVERYWHERE.toString(),
+		 * CalibrationOption.ONLY_IN_BOUNDS.toString(),
+		 * CalibrationOption.CROP.toString()));
+		 */
 		webcamListView.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
 			public ListCell<String> call(ListView<String> list) {
@@ -136,8 +139,8 @@ CameraRenamedListener {
 		webcamListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 		linkSliderToLabel(markerRadiusSlider, markerRadiusLabel);
-		linkSliderToLabel(virtualMagazineSlider, virtualMagazineLabel);
-		linkSliderToLabel(malfunctionsSlider, malfunctionsLabel);
+		//linkSliderToLabel(virtualMagazineSlider, virtualMagazineLabel);
+		//linkSliderToLabel(malfunctionsSlider, malfunctionsLabel);
 
 		for (final String webcamName : config.getWebcams().keySet()) {
 			final Camera c = config.getWebcams().get(webcamName);
@@ -165,15 +168,15 @@ CameraRenamedListener {
 		greenLaserSoundTextField.setText(config.getGreenLaserSound().getPath());
 		greenLaserSoundTextField.setDisable(!config.useGreenLaserSound());
 		greenLaserSoundButton.setDisable(!config.useGreenLaserSound());
-		virtualMagazineCheckBox.setSelected(config.useVirtualMagazine());
-		virtualMagazineSlider.setDisable(!config.useVirtualMagazine());
-		virtualMagazineSlider.setValue(config.getVirtualMagazineCapacity());
-		malfunctionsCheckBox.setSelected(config.useMalfunctions());
-		malfunctionsSlider.setValue(config.getMalfunctionsProbability());
-		malfunctionsSlider.setDisable(!config.useMalfunctions());
-		calibratedOptionsChoiceBox.setValue(config.getCalibratedFeedBehavior().toString());
-		showArenaShotMarkersCheckBox.setSelected(config.showArenaShotMarkers());
-		autoAdjustExposureCheckBox.setSelected(config.autoAdjustExposure());
+		//virtualMagazineCheckBox.setSelected(config.useVirtualMagazine());
+		//virtualMagazineSlider.setDisable(!config.useVirtualMagazine());
+		//virtualMagazineSlider.setValue(config.getVirtualMagazineCapacity());
+		//malfunctionsCheckBox.setSelected(config.useMalfunctions());
+		//malfunctionsSlider.setValue(config.getMalfunctionsProbability());
+		//malfunctionsSlider.setDisable(!config.useMalfunctions());
+		//calibratedOptionsChoiceBox.setValue(config.getCalibratedFeedBehavior().toString());
+		//showArenaShotMarkersCheckBox.setSelected(config.showArenaShotMarkers());
+		//autoAdjustExposureCheckBox.setSelected(config.autoAdjustExposure());
 	}
 
 	private void linkSliderToLabel(final Slider slider, final Label label) {
@@ -280,16 +283,16 @@ CameraRenamedListener {
 		return Optional.ofNullable(fileChooser.showOpenDialog(parent));
 	}
 
-	@FXML
-	public void virtualMagazineCheckBoxClicked(ActionEvent event) {
-		virtualMagazineSlider.setDisable(!virtualMagazineCheckBox.isSelected());
-	}
+	
+	/*@FXML
+	 * public void virtualMagazineCheckBoxClicked(ActionEvent event) {
+	 * virtualMagazineSlider.setDisable(!virtualMagazineCheckBox.isSelected()); }
+	 */
 
-	@FXML
-	public void malfunctionsCheckBoxClicked(ActionEvent event) {
-		malfunctionsSlider.setDisable(!malfunctionsCheckBox.isSelected());
-	}
-
+	/*
+	 * @FXML public void malfunctionsCheckBoxClicked(ActionEvent event) {
+	 * malfunctionsSlider.setDisable(!malfunctionsCheckBox.isSelected()); }
+	 */
 	@FXML
 	public void registerCameraClicked(ActionEvent event) {
 		collectIpCamInfo();
@@ -420,13 +423,13 @@ CameraRenamedListener {
 		config.setRedLaserSound(new File(redLaserSoundTextField.getText()));
 		config.setUseGreenLaserSound(greenLaserSoundCheckBox.isSelected());
 		config.setGreenLaserSound(new File(greenLaserSoundTextField.getText()));
-		config.setUseVirtualMagazine(virtualMagazineCheckBox.isSelected());
-		config.setVirtualMagazineCapacity((int) virtualMagazineSlider.getValue());
-		config.setMalfunctions(malfunctionsCheckBox.isSelected());
-		config.setMalfunctionsProbability((float) malfunctionsSlider.getValue());
-		config.setCalibratedFeedBehavior(CalibrationOption.fromString(calibratedOptionsChoiceBox.getValue()));
-		config.setShowArenaShotMarkers(showArenaShotMarkersCheckBox.isSelected());
-		config.setAutoAdjustExposure(autoAdjustExposureCheckBox.isSelected());
+		//config.setUseVirtualMagazine(virtualMagazineCheckBox.isSelected());
+		//config.setVirtualMagazineCapacity((int) virtualMagazineSlider.getValue());
+		//config.setMalfunctions(malfunctionsCheckBox.isSelected());
+		//config.setMalfunctionsProbability((float) malfunctionsSlider.getValue());
+		//config.setCalibratedFeedBehavior(CalibrationOption.fromString(calibratedOptionsChoiceBox.getValue()));
+		//config.setShowArenaShotMarkers(showArenaShotMarkersCheckBox.isSelected());
+		//config.setAutoAdjustExposure(autoAdjustExposureCheckBox.isSelected());
 
 		if (config.writeConfigurationFile()) {
 			calibrationConfigurator.calibratedFeedBehaviorsChanged();

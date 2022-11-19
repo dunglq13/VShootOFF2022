@@ -593,9 +593,10 @@ public class Main extends Application {
 			final Scene scene = new Scene(loader.getRoot());
 
 			if (version.isPresent())
-				primaryStage.setTitle("VShootOFF " + version.get());
+				primaryStage.setTitle("Huấn luyện bắn súng ngắn 1.0");  
+//			primaryStage.setTitle("VShootOFF" + version.get());  
 			else
-				primaryStage.setTitle("VShootOFF");
+				primaryStage.setTitle("Huấn luyện bắn súng ngắn 1.0");
 			primaryStage.setScene(scene);
 			final ShootOFFController controller = (ShootOFFController) loader.getController();
 			controller.init(config);

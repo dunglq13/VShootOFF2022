@@ -18,10 +18,13 @@
 
 package com.shootoff.gui.pane;
 
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +35,15 @@ import com.shootoff.gui.controller.TargetEditorController;
 import com.shootoff.targets.CameraViews;
 import com.shootoff.targets.io.TargetIO;
 import com.shootoff.targets.io.TargetIO.TargetComponents;
+import com.shootoff.util.SwingFXUtils;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import marytts.util.io.FileFilter;
 
 public class TargetSlide extends Slide implements TargetListener, ItemSelectionListener<File> {
@@ -118,6 +124,9 @@ public class TargetSlide extends Slide implements TargetListener, ItemSelectionL
 		} else {
 			logger.error("Failed to find target files because a list of files could not be retrieved");
 		}
+		
+		File ref = new File(System.getProperty("shootoff.home") + File.separator + "targets" + "\\test.target");
+		cameraViews.getSelectedCameraView().addTarget(ref);
 	}
 
 	@Override
@@ -174,6 +183,37 @@ public class TargetSlide extends Slide implements TargetListener, ItemSelectionL
 						editorController);
 				targetEditorSlide.showControls();
 				targetEditorSlide.showBody();
+			}
+		}
+	}
+	
+	public void saveImage() {
+		final Node container = cameraViews.getSelectedCameraContainer();
+		final RenderedImage renderedImage = SwingFXUtils
+				.fromFXImage(container.snapshot(new SnapshotParameters(), null), null);
+
+		final FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Lưu Hình Ảnh");
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("Graphics Interchange Format (*.gif)", "*.gif"),
+				new FileChooser.ExtensionFilter("Portable Network Graphic (*.png)", "*.png"));
+
+		final File feedFile = fileChooser.showSaveDialog(parentControls.getScene().getWindow());
+
+		if (feedFile != null) {
+			final String extension = fileChooser.getSelectedExtensionFilter().getExtensions().get(0).substring(2);
+			File imageFile;
+
+			if (feedFile.getPath().endsWith(extension)) {
+				imageFile = feedFile;
+			} else {
+				imageFile = new File(feedFile.getPath() + "." + extension);
+			}
+
+			try {
+				ImageIO.write(renderedImage, extension, imageFile);
+			} catch (final IOException e) {
+				logger.error("Error saving feed image", e);
 			}
 		}
 	}

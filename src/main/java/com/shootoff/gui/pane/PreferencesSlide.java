@@ -36,7 +36,7 @@ public class PreferencesSlide extends Slide {
 	public PreferencesSlide(Pane parentControls, Pane parentBody, PreferencesController preferencesController) {
 		super(parentControls, parentBody);
 
-		addSlideControlButton("Lưu", (event) -> {
+		addSlideControlButton("Lưu Cài Đặt", (event) -> {
 			try {
 				preferencesController.save();
 			} catch (ConfigurationException | IOException e) {

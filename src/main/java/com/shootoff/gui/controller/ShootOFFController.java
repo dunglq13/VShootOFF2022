@@ -174,7 +174,6 @@ public class ShootOFFController implements CameraConfigListener, CameraErrorView
 			}
 		});
 
-		targetPane = new TargetSlide(controlsContainer, bodyContainer, this);
 		exerciseSlide = new ExerciseSlide(controlsContainer, bodyContainer, this);
 		projectorSlide = new ProjectorSlide(controlsContainer, bodyContainer, this, shootOFFStage,
 				trainingExerciseContainer, this, exerciseSlide);
@@ -223,11 +222,12 @@ public class ShootOFFController implements CameraConfigListener, CameraErrorView
 
 		addCameraTabs();
 
-		final TableColumn<ShotEntry, String> timeCol = new TableColumn<>("Time");
+		targetPane = new TargetSlide(controlsContainer, bodyContainer, this);
+		final TableColumn<ShotEntry, String> timeCol = new TableColumn<>("Thời Gian");
 		timeCol.setMinWidth(85);
 		timeCol.setCellValueFactory(new PropertyValueFactory<ShotEntry, String>("timestamp"));
 
-		final TableColumn<ShotEntry, ShotEntry.SplitData> splitCol = new TableColumn<>("Split");
+		final TableColumn<ShotEntry, ShotEntry.SplitData> splitCol = new TableColumn<>("Độ Giãn");
 		splitCol.setMinWidth(85);
 		splitCol.setCellValueFactory(new PropertyValueFactory<ShotEntry, ShotEntry.SplitData>("split"));
 
@@ -775,6 +775,11 @@ public class ShootOFFController implements CameraConfigListener, CameraErrorView
 		targetPane.showControls();
 	}
 
+	@FXML
+	public void saveImage() {
+		targetPane.saveImage();
+	}
+	
 	@FXML
 	public void trainingButtonClicked(MouseEvent event) {
 		exerciseSlide.showControls();
